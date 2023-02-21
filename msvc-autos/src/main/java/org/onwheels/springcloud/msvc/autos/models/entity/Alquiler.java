@@ -16,10 +16,10 @@ public class Alquiler {
     @Id
     private Long id;
 
-    @Column(name="usuario_id")
+    @Column(name = "usuario_id")
     private Long usuarioId;
 
-    @Column(name="auto_id")
+    @Column(name = "auto_id")
     private Long autoId;
 
     @Column(name = "fecha_inicio")
@@ -119,5 +119,17 @@ public class Alquiler {
 
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Alquiler)) {
+            return false;
+        }
+        Alquiler o = (Alquiler) obj;
+        return this.usuarioId != null && this.usuarioId.equals(o.usuarioId);
     }
 }

@@ -44,11 +44,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         repository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Usuario> porUsuario(String usuario) {
         return repository.findByUsuario(usuario);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Usuario> porEmail(String email) {
         return repository.findByEmail(email);
