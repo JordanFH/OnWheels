@@ -94,16 +94,14 @@ public class Usuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario user = (Usuario) o;
-        return id.equals(user.id) && usuario.equals(user.usuario) && email.equals(user.email);
+        return usuario.equals(user.usuario) && email.equals(user.email);
     }
 
     @Override
     public String toString() {
         return "Usuario{" +
-                "id=" + id +
-                ", usuario='" + usuario + '\'' +
+                "usuario='" + usuario + '\'' +
                 ", email='" + email + '\'' +
-                ", activo=" + activo +
                 '}';
     }
 }

@@ -18,6 +18,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>msvc-usuarios</module>
+        <module>msvc-autos</module>
     </modules>
 
     <properties>
