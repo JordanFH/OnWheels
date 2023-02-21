@@ -1,6 +1,8 @@
 package org.onwheels.springcloud.msvc.autos.controllers;
 
+import feign.FeignException;
 import jakarta.validation.Valid;
+import org.onwheels.springcloud.msvc.autos.models.Usuario;
 import org.onwheels.springcloud.msvc.autos.models.entity.Auto;
 import org.onwheels.springcloud.msvc.autos.services.AutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +91,36 @@ public class AutoController {
             dbAuto.setActivo(false);
             service.guardar(dbAuto);
             return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/asignar-usuario/{autoId}")
+    public ResponseEntity<?> asignarUsuario(@RequestBody Usuario usuario, @PathVariable Long autoId) {
+        Optional<Usuario> optional;
+        try {
+            optional = service.asignarUsuario(usuario, autoId);
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("Mensaje", "No existe el usuario por el id o hubo un error en la comunicación: " + e.getMessage()));
+        }
+        if (optional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(optional.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/eliminar-usuario/{autoId}")
+    public ResponseEntity<?> eliminarUsuario(@RequestBody Usuario usuario, @PathVariable Long autoId) {
+        Optional<Usuario> optional;
+        try {
+            optional = service.eliminarUsuario(usuario, autoId);
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("Mensaje", "No existe el usuario por el id o hubo un error en la comunicación: " + e.getMessage()));
+        }
+        if (optional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(optional.get());
         }
         return ResponseEntity.notFound().build();
     }

@@ -69,6 +69,7 @@ public class AutoServiceImpl implements AutoService {
         if (optional.isPresent()) {
             Usuario usuarioMsvc = client.detalle(usuario.getId());
             Auto auto = optional.get();
+            auto.setDisponible(false);
             Alquiler alquiler = new Alquiler();
             alquiler.setUsuarioId(usuarioMsvc.getId());
             auto.addAlquiler(alquiler);
@@ -85,6 +86,7 @@ public class AutoServiceImpl implements AutoService {
         if (optional.isPresent()) {
             Usuario usuarioMsvc = client.detalle(usuario.getId());
             Auto auto = optional.get();
+            auto.setDisponible(true);
             Alquiler alquiler = new Alquiler();
             alquiler.setUsuarioId(usuarioMsvc.getId());
             auto.removeAlquiler(alquiler);

@@ -23,14 +23,10 @@ public class Alquiler {
     private Long autoId;
 
     @Column(name = "fecha_inicio")
-    @FutureOrPresent(message = "El campo fecha de inicio no puede ser antes de hoy")
-    @NotNull(message = "El campo fecha de inicio no puede ser nulo")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime fechaInicio = LocalDateTime.now();
 
     @Column(name = "fecha_fin")
-    @FutureOrPresent(message = "El campo fecha de fin no puede ser antes de hoy")
-    @NotNull(message = "El campo fecha de fin no puede ser nulo")
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime fechaFin = LocalDateTime.now();
 
@@ -126,10 +122,9 @@ public class Alquiler {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Alquiler)) {
+        if (!(obj instanceof Alquiler o)) {
             return false;
         }
-        Alquiler o = (Alquiler) obj;
         return this.usuarioId != null && this.usuarioId.equals(o.usuarioId);
     }
 }
