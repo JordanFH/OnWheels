@@ -2,6 +2,10 @@ package org.onwheels.springcloud.msvc.autos.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.onwheels.springcloud.msvc.autos.models.Usuario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "autos")
@@ -33,6 +37,42 @@ public class Auto {
     private boolean disponible = true;
 
     private boolean activo = true;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auto_id")
+    private List<Alquiler> alquileres;
+
+    @Transient
+    private List<Usuario> usuarios;
+
+
+    public Auto(){
+        alquileres = new ArrayList<>();
+        usuarios = new ArrayList<>();
+    }
+    public void addAlquiler(Alquiler alquiler){
+        alquileres.add(alquiler);
+    }
+
+    public void removeAlquiler(Alquiler alquiler){
+        alquileres.remove(alquiler);
+    }
+
+    public List<Alquiler> getAlquileres() {
+        return alquileres;
+    }
+
+    public void setAlquileres(List<Alquiler> alquileres) {
+        this.alquileres = alquileres;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
 
     public Long getId() {
         return id;
@@ -88,24 +128,5 @@ public class Auto {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Auto auto = (Auto) o;
-        return anio == auto.anio && marca.equals(auto.marca) && modelo.equals(auto.modelo);
-    }
-
-    @Override
-    public String toString() {
-        return "Auto{" +
-                "marca='" + marca + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", anio=" + anio +
-                ", costo_hora=" + costo_hora +
-                ", disponible=" + disponible +
-                '}';
     }
 }

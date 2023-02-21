@@ -83,25 +83,4 @@ public class Usuario {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
-
-    @PreRemove
-    public void preRemove() {
-        this.activo = false;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Usuario user = (Usuario) o;
-        return usuario.equals(user.usuario) && email.equals(user.email);
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "usuario='" + usuario + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }
