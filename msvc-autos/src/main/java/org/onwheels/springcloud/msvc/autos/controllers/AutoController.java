@@ -110,11 +110,41 @@ public class AutoController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/asignar-usuario-por-id/{autoId}")
+    public ResponseEntity<?> asignarUsuarioPorId(@RequestParam Long usuarioId, @PathVariable Long autoId) {
+        Optional<Usuario> optional;
+        try {
+            optional = service.asignarUsuarioPorId(usuarioId, autoId);
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("Mensaje", "No existe el usuario por el id o hubo un error en la comunicación: " + e.getMessage()));
+        }
+        if (optional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(optional.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/eliminar-usuario/{autoId}")
     public ResponseEntity<?> eliminarUsuario(@RequestBody Usuario usuario, @PathVariable Long autoId) {
         Optional<Usuario> optional;
         try {
             optional = service.eliminarUsuario(usuario, autoId);
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("Mensaje", "No existe el usuario por el id o hubo un error en la comunicación: " + e.getMessage()));
+        }
+        if (optional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(optional.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/eliminar-usuario-por-id/{autoId}")
+    public ResponseEntity<?> eliminarUsuarioPorId(@RequestParam Long usuarioId, @PathVariable Long autoId) {
+        Optional<Usuario> optional;
+        try {
+            optional = service.eliminarUsuarioPorId(usuarioId, autoId);
         } catch (FeignException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("Mensaje", "No existe el usuario por el id o hubo un error en la comunicación: " + e.getMessage()));

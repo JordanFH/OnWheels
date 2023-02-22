@@ -42,13 +42,8 @@ public class Auto {
     @JoinColumn(name = "auto_id")
     private List<Alquiler> alquileres;
 
-    @Transient
-    private List<Usuario> usuarios;
-
-
     public Auto(){
         alquileres = new ArrayList<>();
-        usuarios = new ArrayList<>();
     }
     public void addAlquiler(Alquiler alquiler){
         alquileres.add(alquiler);
@@ -64,14 +59,6 @@ public class Auto {
 
     public void setAlquileres(List<Alquiler> alquileres) {
         this.alquileres = alquileres;
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 
     public Long getId() {

@@ -22,6 +22,8 @@ public interface AutoService {
     Optional<Auto> porModelo(String modelo);
 
     // Métodos remotos
-    Optional<Usuario> asignarUsuario(Usuario usuario, Long cursoId);
-    Optional<Usuario> eliminarUsuario(Usuario usuario, Long cursoId);
+    Optional<Usuario> asignarUsuario(Usuario usuario, Long autoId);
+    Optional<Usuario> asignarUsuarioPorId(Long usuarioId, Long autoId);
+    Optional<Usuario> eliminarUsuario(Usuario usuario, Long autoId);
+    Optional<Usuario> eliminarUsuarioPorId(Long usuarioId, Long autoId);
 }

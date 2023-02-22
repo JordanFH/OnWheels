@@ -64,35 +64,67 @@ public class AutoServiceImpl implements AutoService {
     // Métodos remotos
     @Transactional
     @Override
-    public Optional<Usuario> asignarUsuario(Usuario usuario, Long cursoId) {
-        Optional<Auto> optional = repository.findById(cursoId);
+    public Optional<Usuario> asignarUsuario(Usuario usuario, Long autoId) {
+        Optional<Auto> optional = repository.findById(autoId);
         if (optional.isPresent()) {
             Usuario usuarioMsvc = client.detalle(usuario.getId());
-            Auto auto = optional.get();
-            auto.setDisponible(false);
-            Alquiler alquiler = new Alquiler();
-            alquiler.setUsuarioId(usuarioMsvc.getId());
-            auto.addAlquiler(alquiler);
-            repository.save(auto);
-            return Optional.of(usuarioMsvc);
+            return asignarAlquiler(optional, usuarioMsvc);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Usuario> asignarUsuarioPorId(Long usuarioId, Long autoId) {
+        Optional<Auto> optional = repository.findById(autoId);
+        Usuario usuarioMsvc = client.detalle(usuarioId);
+        if (optional.isPresent() && usuarioMsvc != null) {
+            return asignarAlquiler(optional, usuarioMsvc);
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Usuario> asignarAlquiler(Optional<Auto> optional, Usuario usuarioMsvc) {
+        Auto auto = optional.get();
+        if(!auto.isDisponible()){
+            return Optional.empty();
+        }
+        auto.setDisponible(false);
+        Alquiler alquiler = new Alquiler();
+        alquiler.setUsuarioId(usuarioMsvc.getId());
+        auto.addAlquiler(alquiler);
+        repository.save(auto);
+        return Optional.of(usuarioMsvc);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Usuario> eliminarUsuario(Usuario usuario, Long autoId) {
+        Optional<Auto> optional = repository.findById(autoId);
+        if (optional.isPresent()) {
+            Usuario usuarioMsvc = client.detalle(usuario.getId());
+            return eliminarAlquiler(optional, usuarioMsvc);
         }
         return Optional.empty();
     }
 
     @Transactional
     @Override
-    public Optional<Usuario> eliminarUsuario(Usuario usuario, Long cursoId) {
-        Optional<Auto> optional = repository.findById(cursoId);
-        if (optional.isPresent()) {
-            Usuario usuarioMsvc = client.detalle(usuario.getId());
-            Auto auto = optional.get();
-            auto.setDisponible(true);
-            Alquiler alquiler = new Alquiler();
-            alquiler.setUsuarioId(usuarioMsvc.getId());
-            auto.removeAlquiler(alquiler);
-            repository.save(auto);
-            return Optional.of(usuarioMsvc);
+    public Optional<Usuario> eliminarUsuarioPorId(Long usuarioId, Long autoId) {
+        Optional<Auto> optional = repository.findById(autoId);
+        Usuario usuarioMsvc = client.detalle(usuarioId);
+        if (optional.isPresent() && usuarioMsvc != null) {
+            return eliminarAlquiler(optional, usuarioMsvc);
         }
         return Optional.empty();
+    }
+
+    private Optional<Usuario> eliminarAlquiler(Optional<Auto> optional, Usuario usuarioMsvc) {
+        Auto auto = optional.get();
+        auto.setDisponible(true);
+        Alquiler alquiler = new Alquiler();
+        alquiler.setUsuarioId(usuarioMsvc.getId());
+        auto.removeAlquiler(alquiler);
+        repository.save(auto);
+        return Optional.of(usuarioMsvc);
     }
 }
